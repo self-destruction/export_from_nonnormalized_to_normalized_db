@@ -7,7 +7,7 @@ $sql = 'SELECT * FROM main_table';
 $query = $db_sqlite->query($sql);
 
 $results = [];
-
+$i = 0;
 while ($res = $query->fetchArray()) {
     foreach ($res as $key => $value) {
         if (!is_int($key)) {
@@ -17,30 +17,43 @@ while ($res = $query->fetchArray()) {
             } elseif (is_string($value)) {
                 $value = '\'' . $value . '\'';
             }
-            $results[$table_name][$column_name][] = $value;
+            $results[$table_name][$i][] = $value;
         }
     }
+    $i++;
 }
 
-//var_dump($results);
+// сортируем, чтобы ограничния не повлияли при добавлении в бд
+$results = [
+    'user' => $results['user'],
+    'url' => $results['url'],
+    'click' => $results['click'],
+    'promocode' => $results['promocode'],
+    'redeem' => $results['redeem']
+];
+
+var_dump($results);
 
 
-$db_mysql = \mysqli_connect('localhost', 'root', 'root', 'url_shortener');
 
-if ( mysqli_connect_errno() ) {
+$db_mysql = new mysqli('localhost', 'root', 'root', 'url_shortener');
+
+if (mysqli_connect_errno()) {
     printf("Не удалось подключиться: %s\n", mysqli_connect_error());
     exit();
 }
 
 foreach ($results as $table_name => $row) {
-    $sql = "INSERT INTO {$table_name} VALUES ";
-    $values = [];
+    foreach ($row as $column_data) {
+        $sql = "INSERT INTO {$table_name} VALUES ";
+        $sql .= '(' . implode(',', $column_data) . ')';
 
-    foreach ($row as $column_name => $column_data) {
-        $values[] = '(' . implode(',', $column_data) . ')';
+        echo $sql . "\n";
+
+        if ($db_mysql->query($sql) !== TRUE) {
+            echo "Error: {$db_mysql->error}\n";
+        }
     }
-
-    $sql .= implode(',', $values);
-
-    echo $sql . "\n";
 }
+
+$db_mysql->close();

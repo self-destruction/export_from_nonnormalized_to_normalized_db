@@ -1,4 +1,4 @@
-DROP TABLE main_table;
+DROP TABLE IF EXISTS main_table;
 
 CREATE TABLE IF NOT EXISTS main_table (
   user_id                  INTEGER,
@@ -111,7 +111,7 @@ VALUES (1,
         1,
         2,
         DATETIME('2011-11-11 00:00:00'),
-        'hrrp://www.google.com',
+        'http://www.google.com',
         NULL,
         NULL,
         NULL,
