@@ -1,0 +1,14 @@
+{
+    "name": "intercross/export_from_nonnormalized_to_normalized_db",
+    "require": {
+        "ext-sqlite3": "*",
+        "ext-mysqli": "*",
+        "phpoffice/phpspreadsheet": "^1.4"
+    },
+    "authors": [
+        {
+            "name": "self-destruction",
+            "email": "syrchikov_max@mail.ru"
+        }
+    ]
+}

@@ -8,17 +8,15 @@ $query = $db_sqlite->query($sql);
 
 $results = [];
 $i = 0;
-while ($res = $query->fetchArray()) {
+while ($res = $query->fetchArray(SQLITE3_ASSOC)) {
     foreach ($res as $key => $value) {
-        if (!is_int($key)) {
-            [$table_name, $column_name] = explode('_', $key, 2);
-            if (is_null($value)) {
-                $value = 'null';
-            } elseif (is_string($value)) {
-                $value = '\'' . $value . '\'';
-            }
-            $results[$table_name][$i][] = $value;
+        [$table_name, $column_name] = explode('_', $key, 2);
+        if (is_null($value)) {
+            $value = 'null';
+        } elseif (is_string($value)) {
+            $value = '\'' . $value . '\'';
         }
+        $results[$table_name][$i][] = $value;
     }
     $i++;
 }
@@ -32,7 +30,7 @@ $results = [
     'redeem' => $results['redeem']
 ];
 
-var_dump($results);
+//var_dump($results);
 
 
 
