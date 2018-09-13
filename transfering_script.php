@@ -43,6 +43,8 @@ if (mysqli_connect_errno()) {
 
 foreach ($results as $table_name => $row) {
     foreach ($row as $column_data) {
+        //TODO insert ignore. ошибки могут быть не только из-за одинаковых айдишников
+        // у меня одинаковые айдишники не вставятся
         $sql = "INSERT INTO {$table_name} VALUES ";
         $sql .= '(' . implode(',', $column_data) . ')';
 

@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `url_shortener`.`url` (
   `long_url` VARCHAR(1024) NOT NULL COMMENT 'полная ссылка, на которую редиректит короткий урл',
   `user_id` INT NOT NULL,
   `date_created` DATETIME DEFAULT CURRENT_TIMESTAMP() NOT NULL,
-  `id_enabled` BOOLEAN DEFAULT 1 NOT NULL COMMENT 'доступна ли короткая ещё ссылка',
+  `is_enabled` BOOLEAN DEFAULT 1 NOT NULL COMMENT 'доступна ли короткая ещё ссылка',
   FOREIGN KEY (`user_id`)  REFERENCES `url_shortener`.`user` (`id`)
 )
   COMMENT 'ссылки';
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `url_shortener`.`click` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `url_id` INT NOT NULL,
   `date` DATETIME DEFAULT CURRENT_TIMESTAMP() NOT NULL,
-  `referer` VARCHAR(1024) NOT NULL COMMENT 'с какого сайта пришли',
+  `referer` VARCHAR(1024) NULL COMMENT 'с какого сайта пришли',
   FOREIGN KEY (`url_id`)  REFERENCES `url_shortener`.`url` (`id`)
 )
   COMMENT 'клики/переходы по ссылкам';
